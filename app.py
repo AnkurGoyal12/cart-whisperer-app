@@ -46,6 +46,14 @@ st.write("Choose a trained model, drop in a test CSV, and see how well it spots 
 chosen_algo = st.sidebar.selectbox("Pick a model", list(MODEL_VAULT.keys()))
 csv_dropzone = st.sidebar.file_uploader("Drop your test CSV here", type="csv")
 
+# Sidebar button so a visitor can download the sample test file from the app itself
+with open("test_data.csv", "rb") as sample_handle:
+    st.sidebar.download_button(
+        "Download sample test CSV",
+        data=sample_handle.read(),
+        file_name="test_data.csv",
+        mime="text/csv",
+    )
 if csv_dropzone is None:
     st.info("Waiting for a test CSV in the sidebar.")
     st.stop()
