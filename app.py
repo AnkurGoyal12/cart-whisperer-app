@@ -67,14 +67,15 @@ pred_flags = model_unit.predict(incoming_sessions[needed_inputs])
 pred_chance = model_unit.predict_proba(incoming_sessions[needed_inputs])[:, 1]
 
 st.subheader(f"Scores for {chosen_algo}")
-score_tiles = st.columns(6)
-score_tiles[0].metric("Accuracy", f"{accuracy_score(true_flags, pred_flags):.4f}")
-score_tiles[1].metric("AUC", f"{roc_auc_score(true_flags, pred_chance):.4f}")
-score_tiles[2].metric("Precision", f"{precision_score(true_flags, pred_flags, zero_division=0):.4f}")
-score_tiles[3].metric("Recall", f"{recall_score(true_flags, pred_flags):.4f}")
-score_tiles[4].metric("F1", f"{f1_score(true_flags, pred_flags):.4f}")
-score_tiles[5].metric("MCC", f"{matthews_corrcoef(true_flags, pred_flags):.4f}")
-
+# Six score tiles shown in two rows of three so the values are never cut off
+upper_tiles = st.columns(3)
+lower_tiles = st.columns(3)
+upper_tiles[0].metric("Accuracy", f"{accuracy_score(true_flags, pred_flags):.4f}")
+upper_tiles[1].metric("AUC", f"{roc_auc_score(true_flags, pred_chance):.4f}")
+upper_tiles[2].metric("Precision", f"{precision_score(true_flags, pred_flags, zero_division=0):.4f}")
+lower_tiles[0].metric("Recall", f"{recall_score(true_flags, pred_flags):.4f}")
+lower_tiles[1].metric("F1", f"{f1_score(true_flags, pred_flags):.4f}")
+lower_tiles[2].metric("MCC", f"{matthews_corrcoef(true_flags, pred_flags):.4f}")
 # Plain-English verdict on how many real buyers the model found
 found_buyers = int(((true_flags == 1) & (pred_flags == 1)).sum())
 all_buyers = int((true_flags == 1).sum())
